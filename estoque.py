@@ -360,33 +360,33 @@ class Ui_MainWindow(object):
         self._2 = QHBoxLayout()
         self._2.setObjectName(u"_2")
         self._2.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.checkBox = QCheckBox(self.widget_3)
-        self.checkBox.setObjectName(u"checkBox")
-        self.checkBox.setFont(font1)
-        self.checkBox.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.cb_1 = QCheckBox(self.widget_3)
+        self.cb_1.setObjectName(u"cb_1")
+        self.cb_1.setFont(font1)
+        self.cb_1.setStyleSheet(u"background-color:rgb(231, 231, 231)")
 
-        self._2.addWidget(self.checkBox)
+        self._2.addWidget(self.cb_1)
 
-        self.checkBox_2 = QCheckBox(self.widget_3)
-        self.checkBox_2.setObjectName(u"checkBox_2")
-        self.checkBox_2.setFont(font1)
-        self.checkBox_2.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.cb_2 = QCheckBox(self.widget_3)
+        self.cb_2.setObjectName(u"cb_2")
+        self.cb_2.setFont(font1)
+        self.cb_2.setStyleSheet(u"background-color:rgb(231, 231, 231)")
 
-        self._2.addWidget(self.checkBox_2)
+        self._2.addWidget(self.cb_2)
 
-        self.checkBox_3 = QCheckBox(self.widget_3)
-        self.checkBox_3.setObjectName(u"checkBox_3")
-        self.checkBox_3.setFont(font1)
-        self.checkBox_3.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.cb_3 = QCheckBox(self.widget_3)
+        self.cb_3.setObjectName(u"cb_3")
+        self.cb_3.setFont(font1)
+        self.cb_3.setStyleSheet(u"background-color:rgb(231, 231, 231)")
 
-        self._2.addWidget(self.checkBox_3)
+        self._2.addWidget(self.cb_3)
 
-        self.checkBox_4 = QCheckBox(self.widget_3)
-        self.checkBox_4.setObjectName(u"checkBox_4")
-        self.checkBox_4.setFont(font1)
-        self.checkBox_4.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.cb_4 = QCheckBox(self.widget_3)
+        self.cb_4.setObjectName(u"cb_4")
+        self.cb_4.setFont(font1)
+        self.cb_4.setStyleSheet(u"background-color:rgb(231, 231, 231)")
 
-        self._2.addWidget(self.checkBox_4)
+        self._2.addWidget(self.cb_4)
 
 
         self.verticalLayout_10.addLayout(self._2)
@@ -470,7 +470,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -506,10 +506,10 @@ class Ui_MainWindow(object):
         self.lbl_preco_2.setText(QCoreApplication.translate("MainWindow", u"Pre\u00e7o", None))
         self.lbl_quantidade_2.setText(QCoreApplication.translate("MainWindow", u"Quantidade", None))
         self.lbl_categoria_2.setText(QCoreApplication.translate("MainWindow", u"Categoria", None))
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"El\u00e9trica", None))
-        self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"Mec\u00e2nica", None))
-        self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"Funilaria", None))
-        self.checkBox_4.setText(QCoreApplication.translate("MainWindow", u"Internos", None))
+        self.cb_1.setText(QCoreApplication.translate("MainWindow", u"El\u00e9trica", None))
+        self.cb_2.setText(QCoreApplication.translate("MainWindow", u"Mec\u00e2nica", None))
+        self.cb_3.setText(QCoreApplication.translate("MainWindow", u"Funilaria", None))
+        self.cb_4.setText(QCoreApplication.translate("MainWindow", u"Internos", None))
         self.lbl_ativo_2.setText(QCoreApplication.translate("MainWindow", u"Ativo", None))
         self.cb_ativo.setItemText(0, QCoreApplication.translate("MainWindow", u"Selecione", None))
         self.cb_ativo.setItemText(1, QCoreApplication.translate("MainWindow", u"Ativo", None))
@@ -525,13 +525,15 @@ class Ui_MainWindow(object):
     def salvar_produto(self):
 
         db = ProdutoRepository()
+
+
         nota = Produto(
 
             nome=self.txt_nome_2.text(),
             preco=self.txt_preco_2.text(),
             quantidade=self.txt_quantidade_2.text(),
-            categoria=self.c
-            ativo=self.cb_ativo.currentText()
+            categoria=self._verificar_categorias(),
+            ativo=self.cb_ativo.currentText(),
         )
 
         if self.btn_salvar_2.text() == 'Salvar':
@@ -571,3 +573,11 @@ class Ui_MainWindow(object):
 
         self.popular_tabela_notas()
         self.limpar_conteudo()
+
+    def _verificar_categorias(self):
+        caterias_selecionadas = []
+        categorias = [self.cb_1, self.cb_2, self.cb_3, self.cb_4]
+        for categoria in categorias:
+            if categoria == selecionado:
+                caterias_selecionadas.append(categorias.index(categoria))
+        return caterias_selecionadas
