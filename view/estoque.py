@@ -9,35 +9,36 @@
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+                           QFont, QFontDatabase, QGradient, QIcon,
+                           QImage, QKeySequence, QLinearGradient, QPainter,
+                           QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
-    QHBoxLayout, QHeaderView, QLabel, QLayout,
-    QLineEdit, QMainWindow, QPushButton, QSizePolicy,
-    QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
-    QWidget)
+                               QHBoxLayout, QHeaderView, QLabel, QLayout,
+                               QLineEdit, QMainWindow, QPushButton, QSizePolicy,
+                               QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
+                               QWidget)
 
 from infra.entities.produto import Produto
 from infra.repository.produto_repository import ProdutoRepository
-from infra.entities import *
-from infra.configs import *
+from infra.entities.categoria import Categoria
+from infra.repository.categoria_repository import CategoriaRepository
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1182, 861)
+        MainWindow.resize(888, 861)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.tabWidget.setStyleSheet(u"background-color:rgb(255, 255, 255); border-radius: 10px;")
         self.tela_estoque = QWidget()
         self.tela_estoque.setObjectName(u"tela_estoque")
         self.verticalLayout_5 = QVBoxLayout(self.tela_estoque)
@@ -45,7 +46,7 @@ class Ui_MainWindow(object):
         self.frame = QFrame(self.tela_estoque)
         self.frame.setObjectName(u"frame")
         self.frame.setMaximumSize(QSize(16777215, 50))
-        self.frame.setStyleSheet(u"background-color:rgb(120, 120, 120)")
+        self.frame.setStyleSheet(u"background-color:rgb(0,110,110)")
         self.frame.setFrameShape(QFrame.NoFrame)
         self.frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame)
@@ -61,19 +62,18 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.lbl_title)
 
-
         self.verticalLayout_5.addWidget(self.frame)
 
         self.frame_2 = QFrame(self.tela_estoque)
         self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setStyleSheet(u"background-color:rgb(120, 120, 120)")
+        self.frame_2.setStyleSheet(u"background-color:rgb(0,139,139)")
         self.frame_2.setFrameShape(QFrame.NoFrame)
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.verticalLayout_7 = QVBoxLayout(self.frame_2)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.frame_6 = QFrame(self.frame_2)
         self.frame_6.setObjectName(u"frame_6")
-        self.frame_6.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.frame_6.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.frame_6.setFrameShape(QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.frame_6)
@@ -89,16 +89,15 @@ class Ui_MainWindow(object):
 
         self.txt_id = QLineEdit(self.frame_6)
         self.txt_id.setObjectName(u"txt_id")
-        self.txt_id.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.txt_id.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_3.addWidget(self.txt_id)
-
 
         self.verticalLayout_7.addWidget(self.frame_6)
 
         self.frame_9 = QFrame(self.frame_2)
         self.frame_9.setObjectName(u"frame_9")
-        self.frame_9.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.frame_9.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.frame_9.setFrameShape(QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QFrame.Raised)
         self.verticalLayout_6 = QVBoxLayout(self.frame_9)
@@ -111,16 +110,15 @@ class Ui_MainWindow(object):
 
         self.txt_nome = QLineEdit(self.frame_9)
         self.txt_nome.setObjectName(u"txt_nome")
-        self.txt_nome.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.txt_nome.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_6.addWidget(self.txt_nome)
-
 
         self.verticalLayout_7.addWidget(self.frame_9)
 
         self.frame_7 = QFrame(self.frame_2)
         self.frame_7.setObjectName(u"frame_7")
-        self.frame_7.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.frame_7.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.frame_7.setFrameShape(QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.frame_7)
@@ -133,19 +131,17 @@ class Ui_MainWindow(object):
 
         self.txt_categoria = QLineEdit(self.frame_7)
         self.txt_categoria.setObjectName(u"txt_categoria")
-        self.txt_categoria.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.txt_categoria.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_4.addWidget(self.txt_categoria)
 
-
         self.verticalLayout_7.addWidget(self.frame_7)
-
 
         self.verticalLayout_5.addWidget(self.frame_2)
 
         self.frame_3 = QFrame(self.tela_estoque)
         self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setStyleSheet(u"background-color:rgb(120, 120, 120)")
+        self.frame_3.setStyleSheet(u"background-color:rgb(0,139,139)")
         self.frame_3.setFrameShape(QFrame.NoFrame)
         self.frame_3.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_5 = QHBoxLayout(self.frame_3)
@@ -180,18 +176,29 @@ class Ui_MainWindow(object):
         __qtablewidgetitem5.setBackground(QColor(231, 231, 231, 231));
         self.tb_estoque.setHorizontalHeaderItem(5, __qtablewidgetitem5)
         self.tb_estoque.setObjectName(u"tb_estoque")
-        self.tb_estoque.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.tb_estoque.setStyleSheet(u"background-color:rgb(255, 255, 255); border-style: solid;\n"
+                                      "  border-bottom-width: 1px;\n"
+                                      "  border-top-width: 1px;\n"
+                                      "  border-right-width: 1px;\n"
+                                      "  border-left-width: 1px;")
         self.tb_estoque.setFrameShape(QFrame.NoFrame)
+        self.tb_estoque.setGridStyle(Qt.SolidLine)
+        self.tb_estoque.horizontalHeader().setCascadingSectionResizes(False)
+        self.tb_estoque.horizontalHeader().setProperty("showSortIndicator", True)
+        self.tb_estoque.horizontalHeader().setStretchLastSection(True)
+        self.tb_estoque.verticalHeader().setCascadingSectionResizes(False)
+        self.tb_estoque.verticalHeader().setHighlightSections(True)
+        self.tb_estoque.verticalHeader().setProperty("showSortIndicator", False)
+        self.tb_estoque.verticalHeader().setStretchLastSection(False)
 
         self.horizontalLayout_5.addWidget(self.tb_estoque)
-
 
         self.verticalLayout_5.addWidget(self.frame_3)
 
         self.frame_4 = QFrame(self.tela_estoque)
         self.frame_4.setObjectName(u"frame_4")
         self.frame_4.setMaximumSize(QSize(16777215, 100))
-        self.frame_4.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.frame_4.setStyleSheet(u"background-color:rgb(0,139,139)")
         self.frame_4.setFrameShape(QFrame.NoFrame)
         self.frame_4.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.frame_4)
@@ -200,7 +207,7 @@ class Ui_MainWindow(object):
         self.frame_5.setObjectName(u"frame_5")
         self.frame_5.setMinimumSize(QSize(0, 0))
         self.frame_5.setMaximumSize(QSize(500, 16777215))
-        self.frame_5.setStyleSheet(u"background-color:rgb(160, 160, 160)")
+        self.frame_5.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.frame_5.setFrameShape(QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_2 = QHBoxLayout(self.frame_5)
@@ -208,24 +215,25 @@ class Ui_MainWindow(object):
         self.btn_cadastrar = QPushButton(self.frame_5)
         self.btn_cadastrar.setObjectName(u"btn_cadastrar")
         self.btn_cadastrar.setFont(font1)
+        self.btn_cadastrar.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.horizontalLayout_2.addWidget(self.btn_cadastrar)
 
         self.btn_filtrar = QPushButton(self.frame_5)
         self.btn_filtrar.setObjectName(u"btn_filtrar")
         self.btn_filtrar.setFont(font1)
+        self.btn_filtrar.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.horizontalLayout_2.addWidget(self.btn_filtrar)
 
         self.bt_limpar = QPushButton(self.frame_5)
         self.bt_limpar.setObjectName(u"bt_limpar")
         self.bt_limpar.setFont(font1)
+        self.bt_limpar.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.horizontalLayout_2.addWidget(self.bt_limpar)
 
-
         self.horizontalLayout.addWidget(self.frame_5)
-
 
         self.verticalLayout_5.addWidget(self.frame_4)
 
@@ -237,7 +245,7 @@ class Ui_MainWindow(object):
         self.frame_8 = QFrame(self.tela_produto)
         self.frame_8.setObjectName(u"frame_8")
         self.frame_8.setMaximumSize(QSize(16777215, 50))
-        self.frame_8.setStyleSheet(u"background-color:rgb(120, 120, 120)")
+        self.frame_8.setStyleSheet(u"background-color:rgb(0,110,110)")
         self.frame_8.setFrameShape(QFrame.NoFrame)
         self.frame_8.setFrameShadow(QFrame.Raised)
         self.verticalLayout_9 = QVBoxLayout(self.frame_8)
@@ -250,19 +258,18 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_9.addWidget(self.lbl_title_2)
 
-
         self.verticalLayout_14.addWidget(self.frame_8)
 
         self.frame_10 = QFrame(self.tela_produto)
         self.frame_10.setObjectName(u"frame_10")
-        self.frame_10.setStyleSheet(u"background-color:rgb(120, 120, 120)")
+        self.frame_10.setStyleSheet(u"background-color:rgb(0,139,139)")
         self.frame_10.setFrameShape(QFrame.NoFrame)
         self.frame_10.setFrameShadow(QFrame.Raised)
         self.verticalLayout_16 = QVBoxLayout(self.frame_10)
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
         self.frame_11 = QFrame(self.frame_10)
         self.frame_11.setObjectName(u"frame_11")
-        self.frame_11.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.frame_11.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.frame_11.setFrameShape(QFrame.StyledPanel)
         self.frame_11.setFrameShadow(QFrame.Raised)
         self.verticalLayout_11 = QVBoxLayout(self.frame_11)
@@ -275,16 +282,15 @@ class Ui_MainWindow(object):
 
         self.txt_id_2 = QLineEdit(self.frame_11)
         self.txt_id_2.setObjectName(u"txt_id_2")
-        self.txt_id_2.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.txt_id_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_11.addWidget(self.txt_id_2)
-
 
         self.verticalLayout_16.addWidget(self.frame_11)
 
         self.frame_12 = QFrame(self.frame_10)
         self.frame_12.setObjectName(u"frame_12")
-        self.frame_12.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.frame_12.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.frame_12.setFrameShape(QFrame.StyledPanel)
         self.frame_12.setFrameShadow(QFrame.Raised)
         self.verticalLayout_12 = QVBoxLayout(self.frame_12)
@@ -297,16 +303,15 @@ class Ui_MainWindow(object):
 
         self.txt_nome_2 = QLineEdit(self.frame_12)
         self.txt_nome_2.setObjectName(u"txt_nome_2")
-        self.txt_nome_2.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.txt_nome_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_12.addWidget(self.txt_nome_2)
-
 
         self.verticalLayout_16.addWidget(self.frame_12)
 
         self.widget_2 = QWidget(self.frame_10)
         self.widget_2.setObjectName(u"widget_2")
-        self.widget_2.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.widget_2.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.verticalLayout_8 = QVBoxLayout(self.widget_2)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.lbl_preco_2 = QLabel(self.widget_2)
@@ -317,16 +322,15 @@ class Ui_MainWindow(object):
 
         self.txt_preco_2 = QLineEdit(self.widget_2)
         self.txt_preco_2.setObjectName(u"txt_preco_2")
-        self.txt_preco_2.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.txt_preco_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_8.addWidget(self.txt_preco_2)
-
 
         self.verticalLayout_16.addWidget(self.widget_2)
 
         self.frame_13 = QFrame(self.frame_10)
         self.frame_13.setObjectName(u"frame_13")
-        self.frame_13.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.frame_13.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.frame_13.setFrameShape(QFrame.StyledPanel)
         self.frame_13.setFrameShadow(QFrame.Raised)
         self.verticalLayout_13 = QVBoxLayout(self.frame_13)
@@ -339,16 +343,15 @@ class Ui_MainWindow(object):
 
         self.txt_quantidade_2 = QLineEdit(self.frame_13)
         self.txt_quantidade_2.setObjectName(u"txt_quantidade_2")
-        self.txt_quantidade_2.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.txt_quantidade_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_13.addWidget(self.txt_quantidade_2)
-
 
         self.verticalLayout_16.addWidget(self.frame_13)
 
         self.widget_3 = QWidget(self.frame_10)
         self.widget_3.setObjectName(u"widget_3")
-        self.widget_3.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.widget_3.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.verticalLayout_10 = QVBoxLayout(self.widget_3)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.lbl_categoria_2 = QLabel(self.widget_3)
@@ -357,46 +360,23 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_10.addWidget(self.lbl_categoria_2)
 
-        self._2 = QHBoxLayout()
-        self._2.setObjectName(u"_2")
-        self._2.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.cb_1 = QCheckBox(self.widget_3)
-        self.cb_1.setObjectName(u"cb_1")
-        self.cb_1.setFont(font1)
-        self.cb_1.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.cb_categoria = QComboBox(self.widget_3)
+        self.cb_categoria.addItem("")
+        self.cb_categoria.addItem("")
+        self.cb_categoria.addItem("")
+        self.cb_categoria.addItem("")
+        self.cb_categoria.addItem("")
+        self.cb_categoria.setObjectName(u"cb_categoria")
+        self.cb_categoria.setFont(font1)
+        self.cb_categoria.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
-        self._2.addWidget(self.cb_1)
-
-        self.cb_2 = QCheckBox(self.widget_3)
-        self.cb_2.setObjectName(u"cb_2")
-        self.cb_2.setFont(font1)
-        self.cb_2.setStyleSheet(u"background-color:rgb(231, 231, 231)")
-
-        self._2.addWidget(self.cb_2)
-
-        self.cb_3 = QCheckBox(self.widget_3)
-        self.cb_3.setObjectName(u"cb_3")
-        self.cb_3.setFont(font1)
-        self.cb_3.setStyleSheet(u"background-color:rgb(231, 231, 231)")
-
-        self._2.addWidget(self.cb_3)
-
-        self.cb_4 = QCheckBox(self.widget_3)
-        self.cb_4.setObjectName(u"cb_4")
-        self.cb_4.setFont(font1)
-        self.cb_4.setStyleSheet(u"background-color:rgb(231, 231, 231)")
-
-        self._2.addWidget(self.cb_4)
-
-
-        self.verticalLayout_10.addLayout(self._2)
-
+        self.verticalLayout_10.addWidget(self.cb_categoria)
 
         self.verticalLayout_16.addWidget(self.widget_3)
 
         self.widget = QWidget(self.frame_10)
         self.widget.setObjectName(u"widget")
-        self.widget.setStyleSheet(u"background-color:rgb(195, 195, 195)")
+        self.widget.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.verticalLayout_15 = QVBoxLayout(self.widget)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.lbl_ativo_2 = QLabel(self.widget)
@@ -411,20 +391,18 @@ class Ui_MainWindow(object):
         self.cb_ativo.addItem("")
         self.cb_ativo.setObjectName(u"cb_ativo")
         self.cb_ativo.setFont(font1)
-        self.cb_ativo.setStyleSheet(u"background-color:rgb(231, 231, 231)")
+        self.cb_ativo.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_15.addWidget(self.cb_ativo)
 
-
         self.verticalLayout_16.addWidget(self.widget)
-
 
         self.verticalLayout_14.addWidget(self.frame_10)
 
         self.frame_14 = QFrame(self.tela_produto)
         self.frame_14.setObjectName(u"frame_14")
         self.frame_14.setMaximumSize(QSize(16777215, 100))
-        self.frame_14.setStyleSheet(u"")
+        self.frame_14.setStyleSheet(u"background-color:rgb(0,139,139)")
         self.frame_14.setFrameShape(QFrame.NoFrame)
         self.frame_14.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_3 = QHBoxLayout(self.frame_14)
@@ -433,7 +411,7 @@ class Ui_MainWindow(object):
         self.frame_15.setObjectName(u"frame_15")
         self.frame_15.setMinimumSize(QSize(0, 0))
         self.frame_15.setMaximumSize(QSize(500, 16777215))
-        self.frame_15.setStyleSheet(u"background-color:rgb(160, 160, 160)")
+        self.frame_15.setStyleSheet(u"background-color:rgb(95,158,160)")
         self.frame_15.setFrameShape(QFrame.StyledPanel)
         self.frame_15.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_4 = QHBoxLayout(self.frame_15)
@@ -441,24 +419,25 @@ class Ui_MainWindow(object):
         self.btn_salvar_2 = QPushButton(self.frame_15)
         self.btn_salvar_2.setObjectName(u"btn_salvar_2")
         self.btn_salvar_2.setFont(font1)
+        self.btn_salvar_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.horizontalLayout_4.addWidget(self.btn_salvar_2)
 
         self.btn_limpar_2 = QPushButton(self.frame_15)
         self.btn_limpar_2.setObjectName(u"btn_limpar_2")
         self.btn_limpar_2.setFont(font1)
+        self.btn_limpar_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.horizontalLayout_4.addWidget(self.btn_limpar_2)
 
         self.btn_saida_estoque_2 = QPushButton(self.frame_15)
         self.btn_saida_estoque_2.setObjectName(u"btn_saida_estoque_2")
         self.btn_saida_estoque_2.setFont(font1)
+        self.btn_saida_estoque_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.horizontalLayout_4.addWidget(self.btn_saida_estoque_2)
 
-
         self.horizontalLayout_3.addWidget(self.frame_15)
-
 
         self.verticalLayout_14.addWidget(self.frame_14)
 
@@ -470,10 +449,10 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
-
+        self.tabWidget.setCurrentIndex(0)
 
         QMetaObject.connectSlotsByName(MainWindow)
+
     # setupUi
 
     def retranslateUi(self, MainWindow):
@@ -498,7 +477,8 @@ class Ui_MainWindow(object):
         self.btn_cadastrar.setText(QCoreApplication.translate("MainWindow", u"Cadastrar", None))
         self.btn_filtrar.setText(QCoreApplication.translate("MainWindow", u"Filtrar", None))
         self.bt_limpar.setText(QCoreApplication.translate("MainWindow", u"Limpar", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_estoque), QCoreApplication.translate("MainWindow", u"tela_estoque", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_estoque),
+                                  QCoreApplication.translate("MainWindow", u"tela_estoque", None))
         self.lbl_title_2.setText(QCoreApplication.translate("MainWindow", u"PRODUTO", None))
         self.lbl_id_2.setText(QCoreApplication.translate("MainWindow", u"ID", None))
         self.txt_id_2.setText("")
@@ -506,10 +486,12 @@ class Ui_MainWindow(object):
         self.lbl_preco_2.setText(QCoreApplication.translate("MainWindow", u"Pre\u00e7o", None))
         self.lbl_quantidade_2.setText(QCoreApplication.translate("MainWindow", u"Quantidade", None))
         self.lbl_categoria_2.setText(QCoreApplication.translate("MainWindow", u"Categoria", None))
-        self.cb_1.setText(QCoreApplication.translate("MainWindow", u"El\u00e9trica", None))
-        self.cb_2.setText(QCoreApplication.translate("MainWindow", u"Mec\u00e2nica", None))
-        self.cb_3.setText(QCoreApplication.translate("MainWindow", u"Funilaria", None))
-        self.cb_4.setText(QCoreApplication.translate("MainWindow", u"Internos", None))
+        self.cb_categoria.setItemText(0, QCoreApplication.translate("MainWindow", u"Selecione", None))
+        self.cb_categoria.setItemText(1, QCoreApplication.translate("MainWindow", u"El\u00e9trica", None))
+        self.cb_categoria.setItemText(2, QCoreApplication.translate("MainWindow", u"Mec\u00e2nica", None))
+        self.cb_categoria.setItemText(3, QCoreApplication.translate("MainWindow", u"Funil\u00e1ria", None))
+        self.cb_categoria.setItemText(4, QCoreApplication.translate("MainWindow", u"Internos", None))
+
         self.lbl_ativo_2.setText(QCoreApplication.translate("MainWindow", u"Ativo", None))
         self.cb_ativo.setItemText(0, QCoreApplication.translate("MainWindow", u"Selecione", None))
         self.cb_ativo.setItemText(1, QCoreApplication.translate("MainWindow", u"Ativo", None))
@@ -518,21 +500,26 @@ class Ui_MainWindow(object):
         self.btn_salvar_2.setText(QCoreApplication.translate("MainWindow", u"Salvar", None))
         self.btn_limpar_2.setText(QCoreApplication.translate("MainWindow", u"Limpar", None))
         self.btn_saida_estoque_2.setText(QCoreApplication.translate("MainWindow", u"Sa\u00edda de estoque", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_produto), QCoreApplication.translate("MainWindow", u"tela_produto", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_produto),
+                                  QCoreApplication.translate("MainWindow", u"tela_produto", None))
 
-# Aqui comeã a lógica (chora moleque)
+
+
+
+
+    # Aqui comeã a lógica (chora moleque)
+
+    db_categoria = CategoriaRepository()
+    db_categoria.insert_categorias()
 
     def salvar_produto(self):
 
         db = ProdutoRepository()
-
-
-        nota = Produto(
-
+        produto = Produto(
             nome=self.txt_nome_2.text(),
             preco=self.txt_preco_2.text(),
             quantidade=self.txt_quantidade_2.text(),
-            categoria=self._verificar_categorias(),
+            id_categoria=self.cb_categoria.currentIndex(),
             ativo=self.cb_ativo.currentText(),
         )
 
@@ -553,8 +540,8 @@ class Ui_MainWindow(object):
 
 
         elif self.btn_salvar.text() == 'Atualizar':
-            nota.id = int(self.txt_id.text())
-            retorno = db.update(nota)
+            produto.id = int(self.txt_id.text())
+            retorno = db.update(produto)
 
             if retorno == 'ok':
                 msg = QMessageBox()
@@ -571,13 +558,6 @@ class Ui_MainWindow(object):
                 msg.setText('Erro ao atualizar verfique os dados inseridos')
                 msg.exec()
 
-        self.popular_tabela_notas()
-        self.limpar_conteudo()
 
-    def _verificar_categorias(self):
-        caterias_selecionadas = []
-        categorias = [self.cb_1, self.cb_2, self.cb_3, self.cb_4]
-        for categoria in categorias:
-            if categoria == selecionado:
-                caterias_selecionadas.append(categorias.index(categoria))
-        return caterias_selecionadas
+
+

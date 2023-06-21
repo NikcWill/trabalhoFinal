@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from infra.configs.base import Base
-from infra.entities import produto, categoria, categoria_produto
+from infra.entities.categoria import Categoria
 
 class DBConnectionHandler:
     def __init__(self):
@@ -46,6 +46,8 @@ class DBConnectionHandler:
 
     def get_engine(self):
         return self.__engine
+
+
 #Função magica que define qualquer comportamento ao serem geradas instancias
     def __enter__(self):
         session_maker = sessionmaker(bind=self.__engine)
@@ -56,7 +58,3 @@ class DBConnectionHandler:
     def __exit__(self, exc_type, exc_val, exc_tb):
         print('Fechando conexão')
         self.session.close()
-
-
-if __name__ == '__main__':
-    db = DBConnectionHandler()
