@@ -8,7 +8,8 @@ class Produto(Base):
     nome = Column(String(100), nullable=True)
     preco = Column(Float, nullable=True)
     quantidade = Column(Integer, nullable=False)
+    id_categoria = Column(Integer, nullable=True)
     ativo = Column(Boolean, nullable=True)
 
     def __repr__(self):
-        return f'Nome do produto = {self.nome}, id = {self.id}, preço = {self.preco}, quantidade = {self.quantidade}, ativo = {self.ativo}'
+        return f'Nome do produto = {self.nome}, id = {self.id}, preço = {self.preco}, quantidade = {self.quantidade},id_categoria = {self.id_categoria} ativo = {self.ativo}'
