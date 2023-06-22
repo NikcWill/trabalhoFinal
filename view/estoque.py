@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
                                QHBoxLayout, QHeaderView, QLabel, QLayout,
                                QLineEdit, QMainWindow, QPushButton, QSizePolicy,
                                QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
-                               QWidget)
+                               QWidget, QMessageBox)
 
 from infra.entities.produto import Produto
 from infra.repository.produto_repository import ProdutoRepository
@@ -366,6 +366,7 @@ class Ui_MainWindow(object):
         self.cb_categoria.addItem("")
         self.cb_categoria.addItem("")
         self.cb_categoria.addItem("")
+        self.cb_categoria.addItem("")
         self.cb_categoria.setObjectName(u"cb_categoria")
         self.cb_categoria.setFont(font1)
         self.cb_categoria.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
@@ -505,12 +506,24 @@ class Ui_MainWindow(object):
 
 
 
+        db_categoria = CategoriaRepository()
+        db_categoria.insert_categorias()
+
+        self.container_tela_consulta = self.frame_2
+        self.container_tela_cadastro = self.frame_10
+
+        # leitura de ação dos botões
+
+        self.btn_salvar_2.clicked.connect(self.salvar_produto)
+        self.bt_limpar.clicked.connect(self.limpar_conteudo_tela1)
+        self.btn_limpar_2.clicked.connect(self.limpar_conteudo_tela2)
 
 
-    # Aqui comeã a lógica (chora moleque)
 
-    db_categoria = CategoriaRepository()
-    db_categoria.insert_categorias()
+
+        # Aqui comeã a lógica (chora moleque)
+
+
 
     def salvar_produto(self):
 
@@ -520,7 +533,7 @@ class Ui_MainWindow(object):
             preco=self.txt_preco_2.text(),
             quantidade=self.txt_quantidade_2.text(),
             id_categoria=self.cb_categoria.currentIndex(),
-            ativo=self.cb_ativo.currentText(),
+            ativo=self.cb_ativo.currentIndex(),
         )
 
         if self.btn_salvar_2.text() == 'Salvar':
@@ -549,7 +562,7 @@ class Ui_MainWindow(object):
                 msg.setWindowTitle('Nota Atualizada ')
                 msg.setText('Nota atualizada com sucesso')
                 msg.exec()
-                self.popular_tabela_notas()
+
 
             else:
                 msg = QMessageBox()
@@ -557,6 +570,31 @@ class Ui_MainWindow(object):
                 msg.setWindowTitle('Erro ao Atualizar ')
                 msg.setText('Erro ao atualizar verfique os dados inseridos')
                 msg.exec()
+
+    def limpar_conteudo_tela1(self):
+        for widget in self.container_tela_consulta.children():
+            if isinstance(widget, QFrame):
+                for widget2 in widget.children():
+                    if isinstance(widget2, QLineEdit):
+                        widget2.clear()
+                    elif isinstance(widget2, QComboBox):
+                        widget2.setCurrentIndex(0)
+
+
+    def limpar_conteudo_tela2(self):
+        for widget in self.container_tela_cadastro.children():
+            print(widget)
+            if isinstance(widget, QFrame):
+                for widget2 in widget.children():
+                    print(widget2)
+                    if isinstance(widget2, QLineEdit):
+
+                        widget2.clear()
+                    elif isinstance(widget2, QComboBox):
+                        print("entrei")
+                        widget2.setCurrentIndex(0)
+
+        self.btn_cadastrar.setText('Salvar')
 
 
 

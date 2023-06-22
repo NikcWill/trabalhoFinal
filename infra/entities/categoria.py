@@ -7,6 +7,6 @@ class Categoria(Base):
 
     id_cat = Column(Integer, autoincrement=True, primary_key=True)
     nome_cat = Column(String(100), nullable=True)
-    #
-    # def __repr__(self):
-    #     return f'Nome da categoria = {self.nome_cat}, id = {self.id_cat}'
+
+    def __repr__(self):
+         return f'Nome da categoria = {self.nome_cat}, id = {self.id_cat}'
