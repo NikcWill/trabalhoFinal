@@ -1,60 +1,56 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from infra.configs.base import Base
 from infra.entities.categoria import Categoria
 
 class DBConnectionHandler:
     def __init__(self):
-        #Dados endereço do banco de dados
-        self.__connectio_string = 'mysql+pymysql://root:Senac2021@localhost:3306/estoqueBD'
-
-        #Instância do engine(gerenciador do banco)
+        # Dados de endereço do banco de dados
+        self.__connection_string = 'mysql+pymysql://root:Gremiofbpa16!@localhost:3308/estoqueDB'
+        # Instância do engine(gerenciador do banco)
         self.__engine = self.__create_database_engine()
-
-        #Sessão nula paa que possa ser alocada uma nova ao ser instanciado um obj
+        # Sessão nula para que possa ser alocada uma nova ao ser instanciado um obj
         self.session = None
-        #Validação da exitencia do banco de dados ao instanciar um obj
+        # Validação de existencia do banco de Dados ao instanciar um obj
         self.__create_database()
-        self.__create_table()
 
-
-#Método para validação da exitencia do banco de dados caso não realizar a criação
+    # Método para validação da existência do banco de dados, caso não exista, ealizar a criação
     def __create_database(self):
-        engine = create_engine(self.__connectio_string, echo=True)
+        engine = create_engine(self.__connection_string, echo=True)
         try:
             engine.connect()
         except Exception as e:
-            if'1049' in str(e):
-                engine = create_engine(self.__connectio_string.rsplit('/', 1)[0], echo=True)
+            if '1049' in str(e):
+                engine = create_engine(self.__connection_string.rsplit("/", 1)[0], echo=True)
+                statement = text(f'CREATE DATABASE IF NOT EXISTS {(self.__connection_string.rsplit("/", 1)[1])}')
                 conn = engine.connect()
-                conn.execute(f'CREATE DATABASE IF NOT EXISTS {self.__connectio_string.rsplit("/", 1)[1]}')
+                conn.execute(statement)
                 conn.close()
-                print('Banco criado')
+                print('Banco Criado!')
                 self.__create_table()
             else:
                 raise e
 
     def __create_table(self):
-        engine = create_engine(self.__connectio_string, echo=True)
-        Base.metadata.create_all(bind=engine, checkfirst=True)
+        engine = create_engine(self.__connection_string, echo=True)
+        Base.metadata.create_all(bind=engine)
         print("Tabela criada com sucesso!")
 
-#Função para criação da engine sem necessidade de informar dados de endereço do banco e utilização de queryes escritas a mão
+    # Função para criação da engine sem necessidade de informar dados de endereço do banco e utilização de queryes escritas á mão
     def __create_database_engine(self):
-        engine = create_engine(self.__connectio_string)
+        engine = create_engine(self.__connection_string)
         return engine
 
     def get_engine(self):
         return self.__engine
 
-
-#Função magica que define qualquer comportamento ao serem geradas instancias
+    # Funções mágicas que definem qualquer comportamento ao serem geradas instâncias
     def __enter__(self):
         session_maker = sessionmaker(bind=self.__engine)
-        print('Gerando conexão')
+        print('Gerando Conexão ...')
         self.session = session_maker()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print('Fechando conexão')
+        print('Fechando Conexão ...')
         self.session.close()

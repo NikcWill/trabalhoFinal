@@ -514,14 +514,15 @@ class Ui_MainWindow(object):
 
         # leitura de ação dos botões
 
+        self.txt_id_2.setReadOnly(True)
+        self.txt_id_2.setStyleSheet("background-color: silver;")
         self.btn_salvar_2.clicked.connect(self.salvar_produto)
         self.bt_limpar.clicked.connect(self.limpar_conteudo_tela1)
         self.btn_limpar_2.clicked.connect(self.limpar_conteudo_tela2)
+        self.btn_limpar_2.setVisible(False)
+        self.btn_saida_estoque_2.setVisible(False)
 
-
-
-
-        # Aqui comeã a lógica (chora moleque)
+        # Aqui começa a lógica (chora moleque)
 
 
 
@@ -530,26 +531,27 @@ class Ui_MainWindow(object):
         db = ProdutoRepository()
         produto = Produto(
             nome=self.txt_nome_2.text(),
-            preco=self.txt_preco_2.text(),
+            preco=self.txt_preco_2.text().replace(',', '.'),
             quantidade=self.txt_quantidade_2.text(),
             id_categoria=self.cb_categoria.currentIndex(),
             ativo=self.cb_ativo.currentIndex(),
         )
 
         if self.btn_salvar_2.text() == 'Salvar':
-            retorno = db.insert(produto)
-            if retorno == 'ok':
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle('Cadastro de Nota ')
-                msg.setText('Cadastro realizado com sucesso')
-                msg.exec()
-            else:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
-                msg.setWindowTitle('Erro ao cadastrar ')
-                msg.setText('Erro ao cadastrar verfique os dados inseridos')
-                msg.exec()
+                self.verificar_campos()
+                retorno = db.insert(produto)
+                if retorno == 'ok':
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Information)
+                    msg.setWindowTitle('Cadastro de Produto')
+                    msg.setText('Produto cadastrado com sucesso')
+                    msg.exec()
+                else:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+                    msg.setWindowTitle('Erro ao cadastrar ')
+                    msg.setText('Erro ao cadastrar produto, verifique os dados inseridos')
+                    msg.exec()
 
 
         elif self.btn_salvar.text() == 'Atualizar':
@@ -570,6 +572,48 @@ class Ui_MainWindow(object):
                 msg.setWindowTitle('Erro ao Atualizar ')
                 msg.setText('Erro ao atualizar verfique os dados inseridos')
                 msg.exec()
+
+    def verificar_campos(self):
+        if not(self.txt_nome_2.text().split()):
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle('Cadastro de Produto')
+            msg.setText('Campo Nome é Obrigatório')
+            msg.exec()
+        elif not(self.txt_preco_2.text().split()):
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle('Cadastro de Produto')
+            msg.setText('Campo Preço é Obrigatório')
+            msg.exec()
+        # elif not (self.txt_quantidade_2.text().isdigit()):
+        #     msg = QMessageBox()
+        #     msg.setIcon(QMessageBox.Information)
+        #     msg.setWindowTitle('Cadastro de Produto')
+        #     msg.setText('Campo Preço Requer um Número Real')
+        #     msg.exec()
+        elif (self.cb_ativo.currentIndex()) == 11:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle('Cadastro de Produto')
+            msg.setText('Campo Ativo é Obrigatório')
+            msg.exec()
+        elif (self.cb_categoria.currentIndex() == -1):
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle('Cadastro de Produto')
+            msg.setText('Campo Categoria é Obrigatório')
+            msg.exec()
+        elif (self.txt_quantidade_2.text()):
+            if self.txt_quantidade_2 == None:
+                self.txt_quantidade_2 = 0
+            elif not self.txt_quantidade_2.text().isdigit():
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle('Cadastro de Produto')
+                msg.setText('Campo Quantidade Requer um Número Inteiro')
+                msg.exec()
+
 
     def limpar_conteudo_tela1(self):
         for widget in self.container_tela_consulta.children():
