@@ -475,9 +475,9 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Categoria", None));
         ___qtablewidgetitem5 = self.tb_estoque.horizontalHeaderItem(5)
         ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"Ativo", None));
-        self.btn_cadastrar.setText(QCoreApplication.translate("MainWindow", u"Cadastrar", None))
-        self.btn_filtrar.setText(QCoreApplication.translate("MainWindow", u"Filtrar", None))
-        self.bt_limpar.setText(QCoreApplication.translate("MainWindow", u"Limpar", None))
+        self.btn_cadastrar.setText(QCoreApplication.translate("MainWindow", u"Gerenciar", None))
+        self.btn_filtrar.setText(QCoreApplication.translate("MainWindow", u"Pesquisar", None))
+        self.bt_limpar.setText(QCoreApplication.translate("MainWindow", u"Vender", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_estoque),
                                   QCoreApplication.translate("MainWindow", u"tela_estoque", None))
         self.lbl_title_2.setText(QCoreApplication.translate("MainWindow", u"PRODUTO", None))
@@ -500,7 +500,7 @@ class Ui_MainWindow(object):
 
         self.btn_salvar_2.setText(QCoreApplication.translate("MainWindow", u"Salvar", None))
         self.btn_limpar_2.setText(QCoreApplication.translate("MainWindow", u"Limpar", None))
-        self.btn_saida_estoque_2.setText(QCoreApplication.translate("MainWindow", u"Sa\u00edda de estoque", None))
+        self.btn_saida_estoque_2.setText(QCoreApplication.translate("MainWindow", u"Voltar", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_produto),
                                   QCoreApplication.translate("MainWindow", u"tela_produto", None))
 
@@ -514,15 +514,26 @@ class Ui_MainWindow(object):
 
         # leitura de ação dos botões
 
+        self.btn_filtrar.clicked.connect(self.pesquisar_por_id)
         self.txt_id_2.setReadOnly(True)
         self.txt_id_2.setStyleSheet("background-color: silver;")
         self.btn_salvar_2.clicked.connect(self.salvar_produto)
         self.bt_limpar.clicked.connect(self.limpar_conteudo_tela1)
         self.btn_limpar_2.clicked.connect(self.limpar_conteudo_tela2)
         self.btn_limpar_2.setVisible(False)
-        self.btn_saida_estoque_2.setVisible(False)
 
         # Aqui começa a lógica (chora moleque)
+
+    def pesquisar_por_id(self, id):
+        if self.txt_id.text() != '':
+            db = ProdutoRepository()
+            retorno = db.select(int(id))
+
+            if retorno is not None:
+                self.txt_id.setText(retorno[1])
+                self.txt_nome.setText(retorno[2])
+                self.txt_categoria.setText(retorno[3])
+                self.carregar_dados()
 
 
 
@@ -639,6 +650,33 @@ class Ui_MainWindow(object):
                         widget2.setCurrentIndex(0)
 
         self.btn_cadastrar.setText('Salvar')
+
+    def popular_tb_estoque(self):
+        self.tb_estoque.setRowCount(0)
+        db = ProdutoRepository()
+        lista_produtos = db.select_all()
+        self.tb_estoque.setRowCount(len(lista_produtos))
+
+        linha = 0
+
+        for produto in lista_produtos:
+            valores = [produto.id, produto.nome, produto.preco, produto.quantidade, produto.id_categoria, produto.ativo]
+            for valor in valores:
+                item = QTableWidgetItem(str(valor))
+                self.tb_estoque.setItem(linha, valores.index(valor), item)
+                self.tb_estoque.item(linha, valores.index(valor))
+            linha += 1
+
+    def carregar_dados(self, row, column):
+        self.txt_id.setStyleSheet("background-color: white;")
+        self.txt_id.setText(self.tabela_notas_cadastradas.item(row, 0).text())
+        self.txt_nome_nota.setText(self.tabela_notas_cadastradas.item(row, 1).text())
+        self.txt_data_nota.setText(self.tabela_notas_cadastradas.item(row, 2).text())
+        self.txt_nota.setText(self.tabela_notas_cadastradas.item(row, 3).text())
+        self.btn_salvar.setText('Atualizar')
+        self.btn_remover.setVisible(True)
+        self.btn_limpar.setVisible(True)
+        self.txt_id.setReadOnly(True)
 
 
 
