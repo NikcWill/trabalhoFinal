@@ -515,6 +515,7 @@ class Ui_MainWindow(object):
         # leitura de ação dos botões
 
         self.btn_filtrar.clicked.connect(self.pesquisar_por_id)
+        self.btn_filtrar.clicked.connect(self.pesquisar_por_nome)
         self.txt_id_2.setReadOnly(True)
         self.txt_id_2.setStyleSheet("background-color: silver;")
         self.btn_salvar_2.clicked.connect(self.salvar_produto)
@@ -524,16 +525,36 @@ class Ui_MainWindow(object):
 
         # Aqui começa a lógica (chora moleque)
 
-    def pesquisar_por_id(self, id):
+    def pesquisar_por_id(self):
         if self.txt_id.text() != '':
             db = ProdutoRepository()
-            retorno = db.select(int(id))
+            retorno = db.select(int(self.txt_id.text()))
 
             if retorno is not None:
-                self.txt_id.setText(retorno[1])
-                self.txt_nome.setText(retorno[2])
-                self.txt_categoria.setText(retorno[3])
-                self.carregar_dados()
+                self.txt_id.setText(str(retorno.id))
+                self.txt_nome.setText(retorno.nome)
+                if self.txt_categoria.text() != '':
+                    db2 = CategoriaRepository()
+                    retorno2 = db2.select(int(retorno.id_categoria))
+                    if retorno2 is not None:
+                        self.txt_categoria.setText(retorno2.nome_cat)
+                # self.carregar_dados()
+
+    def pesquisar_por_nome(self):
+        if self.txt_nome.text() != '':
+            db = ProdutoRepository()
+            retorno = db.select_name(self.txt_nome.text())
+
+
+            if retorno is not None:
+                self.txt_id.setText(str(retorno.id))
+                self.txt_nome.setText(retorno.nome)
+                if self.txt_categoria.text() != '':
+                    db2 = CategoriaRepository()
+                    retorno2 = db2.select(int(retorno.id_categoria))
+                    if retorno2 is not None:
+                        self.txt_categoria.setText(retorno2.nome_cat)
+                # self.carregar_dados()
 
 
 
