@@ -516,6 +516,8 @@ class Ui_MainWindow(object):
 
         self.btn_filtrar.clicked.connect(self.pesquisar_por_id)
         self.btn_filtrar.clicked.connect(self.pesquisar_por_nome)
+        # self.btn_filtrar.clicked.connect(self.pesquisar_por_id())
+        # self.popular_tb_estoque()
         self.txt_id_2.setReadOnly(True)
         self.txt_id_2.setStyleSheet("background-color: silver;")
         self.btn_salvar_2.clicked.connect(self.salvar_produto)
@@ -528,34 +530,58 @@ class Ui_MainWindow(object):
     def pesquisar_por_id(self):
         if self.txt_id.text() != '':
             db = ProdutoRepository()
-            retorno = db.select(int(self.txt_id.text()))
+            retorno = db.select(self.txt_id.text())
+            self.btn_filtrar.text() == 'Limpar'
 
             if retorno is not None:
                 self.txt_id.setText(str(retorno.id))
                 self.txt_nome.setText(retorno.nome)
-                if self.txt_categoria.text() != '':
-                    db2 = CategoriaRepository()
-                    retorno2 = db2.select(int(retorno.id_categoria))
-                    if retorno2 is not None:
-                        self.txt_categoria.setText(retorno2.nome_cat)
-                # self.carregar_dados()
+                self.txt_categoria.setText(str(retorno.id_categoria))
+                self.popular_tb_estoque_prod(int(self.txt_id.text()))
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle('Pesquisa de Produto')
+                msg.setText('Produto Inexistente')
+                msg.exec()
+
 
     def pesquisar_por_nome(self):
         if self.txt_nome.text() != '':
             db = ProdutoRepository()
             retorno = db.select_name(self.txt_nome.text())
+            self.btn_filtrar.text() == 'Limpar'
 
+            if retorno is not None:
+                for produto in retorno:
+                    self.txt_id.setText(str(produto.id))
+                    self.txt_nome.setText(produto.nome)
+                    self.txt_categoria.setText(str(produto.id_categoria))
+                    self.popular_tb_estoque()
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle('Pesquisa de Produto')
+                msg.setText('Produto Inexistente')
+                msg.exec()
+
+    def pesquisar_por_categoria(self):
+        if self.txt_categoria.text() != '':
+            db = ProdutoRepository()
+            retorno = db.select_categoria(self.txt_categoria.text())
+            self.btn_filtrar.text() == 'Limpar'
 
             if retorno is not None:
                 self.txt_id.setText(str(retorno.id))
                 self.txt_nome.setText(retorno.nome)
-                if self.txt_categoria.text() != '':
-                    db2 = CategoriaRepository()
-                    retorno2 = db2.select(int(retorno.id_categoria))
-                    if retorno2 is not None:
-                        self.txt_categoria.setText(retorno2.nome_cat)
-                # self.carregar_dados()
-
+                self.txt_categoria.setText(str(retorno.id_categoria))
+                self.popular_tb_estoque_prod(int(self.txt_id.text()))
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle('Pesquisa de Produto')
+                msg.setText('Produto Inexistente')
+                msg.exec()
 
 
     def salvar_produto(self):
@@ -565,8 +591,8 @@ class Ui_MainWindow(object):
             nome=self.txt_nome_2.text(),
             preco=self.txt_preco_2.text().replace(',', '.'),
             quantidade=self.txt_quantidade_2.text(),
-            id_categoria=self.cb_categoria.currentIndex(),
-            ativo=self.cb_ativo.currentIndex(),
+            id_categoria=self.cb_categoria.currentText(),
+            ativo=self.cb_ativo.currentText(),
         )
 
         if self.btn_salvar_2.text() == 'Salvar':
@@ -672,15 +698,29 @@ class Ui_MainWindow(object):
 
         self.btn_cadastrar.setText('Salvar')
 
+    def popular_tb_estoque_prod(self, id):
+        self.tb_estoque.setRowCount(0)
+        db = ProdutoRepository()
+        produto = db.select(id)
+
+        if produto is not None:
+            self.tb_estoque.setRowCount(1)
+            valores = [produto.id, produto.nome, produto.preco, produto.quantidade]
+            for coluna, valor in enumerate(valores):
+                item = QTableWidgetItem(str(valor))
+                self.tb_estoque.setItem(0, coluna, item)
+        else:
+            self.tb_estoque.setRowCount(0)
+
     def popular_tb_estoque(self):
         self.tb_estoque.setRowCount(0)
         db = ProdutoRepository()
-        lista_produtos = db.select_all()
-        self.tb_estoque.setRowCount(len(lista_produtos))
+        retorno = db.select(int(self.txt_id.text()))
+        self.tb_estoque.setRowCount()
 
         linha = 0
 
-        for produto in lista_produtos:
+        for produto in retorno:
             valores = [produto.id, produto.nome, produto.preco, produto.quantidade, produto.id_categoria, produto.ativo]
             for valor in valores:
                 item = QTableWidgetItem(str(valor))
@@ -690,10 +730,12 @@ class Ui_MainWindow(object):
 
     def carregar_dados(self, row, column):
         self.txt_id.setStyleSheet("background-color: white;")
-        self.txt_id.setText(self.tabela_notas_cadastradas.item(row, 0).text())
-        self.txt_nome_nota.setText(self.tabela_notas_cadastradas.item(row, 1).text())
-        self.txt_data_nota.setText(self.tabela_notas_cadastradas.item(row, 2).text())
-        self.txt_nota.setText(self.tabela_notas_cadastradas.item(row, 3).text())
+        self.txt_id.setText(self.tb_estoque.item(row, 0).text())
+        self.txt_nome.setText(self.tb_estoque.item(row, 1).text())
+        self.txt_preco_2.setText(self.tb_estoque.item(row, 2).text())
+        self.txt_quantidade_2.setText(self.tb_estoque.item(row, 3).text())
+        self.txt_categoria.setText(self.tb_estoque.item(row, 4).text())
+        self.cb_ativo.setText(self.tb_estoque.item(row, 5).text())
         self.btn_salvar.setText('Atualizar')
         self.btn_remover.setVisible(True)
         self.btn_limpar.setVisible(True)
