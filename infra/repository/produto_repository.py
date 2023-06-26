@@ -14,6 +14,16 @@ class ProdutoRepository:
             data = db.session.query(Produto).filter(Produto.id == id).first()
             return data
 
+    def selectCat(self, id):
+        with DBConnectionHandler() as db:
+            data = db.session.query(Produto).filter(Produto.id_categoria == id).all()
+            return data
+
+    def selectName(self, name):
+        with DBConnectionHandler() as db:
+            data = db.session.query(Produto).filter(Produto.nome == name).all()
+            return data
+
     def insert(self, produto):
         with DBConnectionHandler() as db:
             try:

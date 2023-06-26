@@ -518,6 +518,8 @@ class Ui_MainWindow(object):
         # leitura de ação dos botões
 
         self.btn_filtrar.clicked.connect(self.pesquisar_por_id)
+        self.btn_filtrar.clicked.connect(self.pesquisar_por_nome)
+        self.btn_filtrar.clicked.connect(self.pesquisar_por_categoria)
 
         self.btn_salvar_2.clicked.connect(self.salvar_produto)
         self.bt_limpar.clicked.connect(self.limpar_conteudo_tela1)
@@ -526,20 +528,20 @@ class Ui_MainWindow(object):
 
         # Aqui começa a lógica (chora moleque)
 
-    def on_change(self):
-
-        if self.txt_nome_2.Text() != '' \
-                and self.txt_preco_2.text() != '' and self.txt_quantidade_2.text() != ''\
-                 and self.cb_categoria.currentIndex()!= '0' and self.cb_ativo.currentIndex()!= '0':
-            self.btn_salvar_2.setEnabled(True)
-            self.btn_saida_estoque_2.setEnabled(True)
-        # elif self.txt_nome_2.Text() != '' \
-        #         or self.txt_preco_2.text() != '' or self.txt_quantidade_2.text() != ''\
-        #          or self.cb_categoria.currentIndex()!= '0' or self.cb_ativo.currentIndex()!= '0':
-        #     self.btn_limpar_2.setVisible(True)
-        else:
-            self.btn_limpar_2.setVisible(False)
-            self.btn_salvar_2.setEnabled(False)
+    # def on_change(self):
+    #
+    #     if self.txt_nome_2.Text() != '' \
+    #             and self.txt_preco_2.text() != '' and self.txt_quantidade_2.text() != ''\
+    #              and self.cb_categoria.currentIndex()!= '0' and self.cb_ativo.currentIndex()!= '0':
+    #         self.btn_salvar_2.setEnabled(True)
+    #         self.btn_saida_estoque_2.setEnabled(True)
+    #     # elif self.txt_nome_2.Text() != '' \
+    #     #         or self.txt_preco_2.text() != '' or self.txt_quantidade_2.text() != ''\
+    #     #          or self.cb_categoria.currentIndex()!= '0' or self.cb_ativo.currentIndex()!= '0':
+    #     #     self.btn_limpar_2.setVisible(True)
+    #     else:
+    #         self.btn_limpar_2.setVisible(False)
+    #         self.btn_salvar_2.setEnabled(False)
 
     def pesquisar_por_id(self):
 
@@ -548,10 +550,7 @@ class Ui_MainWindow(object):
             retorno = db.select(self.txt_id.text())
 
             if retorno is not None:
-                self.txt_id.setText(str(retorno.id))
-                self.txt_nome.setText(retorno.nome)
-                self.txt_categoria.setText(str(retorno.id_categoria))
-                self.popular_tb_estoque_prod(self.txt_id.text())
+                self.popular_tb_estoque_id(int(self.txt_id.text()))
             else:
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
@@ -563,14 +562,12 @@ class Ui_MainWindow(object):
 
     def pesquisar_por_nome(self):
         if self.txt_nome.text() != '':
-            db = ProdutoRepository()
-            retorno = db.select_name(self.txt_nome.text())
 
+            db = ProdutoRepository()
+            retorno = db.selectName(self.txt_nome.text())
+            print(retorno)
             if retorno is not None:
-                for produto in retorno:
-                    self.txt_id.setText(str(produto.id))
-                    self.txt_nome.setText(produto.nome)
-                    self.txt_categoria.setText(str(produto.id_categoria))
+                self.popular_tb_estoque_name(self.txt_nome.text())
 
             else:
                 msg = QMessageBox()
@@ -578,24 +575,24 @@ class Ui_MainWindow(object):
                 msg.setWindowTitle('Pesquisa de Produto')
                 msg.setText('Produto Inexistente')
                 msg.exec()
-        self.popular_tb_estoque()
-    # def pesquisar_por_categoria(self):
-    #     if self.txt_categoria.text() != '':
-    #         db = ProdutoRepository()
-    #         retorno = db.select_categoria(self.txt_categoria.text())
-    #
-    #         if retorno is not None:
-    #             self.txt_id.setText(str(retorno.id))
-    #             self.txt_nome.setText(retorno.nome)
-    #             self.txt_categoria.setText(str(retorno.id_categoria))
-    #
-    #         else:
-    #             msg = QMessageBox()
-    #             msg.setIcon(QMessageBox.Critical)
-    #             msg.setWindowTitle('Pesquisa de Produto')
-    #             msg.setText('Produto Inexistente')
-    #             msg.exec()
-    #     self.popular_tb_estoque()
+                self.popular_tb_estoque()
+
+    def pesquisar_por_categoria(self):
+        if self.txt_categoria.text() != '':
+
+            db = ProdutoRepository()
+            retorno = db.selectCat(int(self.txt_categoria.text()))
+            if retorno is not None:
+
+                self.popular_tb_estoque_cat(int(self.txt_categoria.text()))
+
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setWindowTitle('Pesquisa de Produto')
+                msg.setText('Produto Inexistente')
+                msg.exec()
+                self.popular_tb_estoque()
     def salvar_produto(self):
 
         db = ProdutoRepository()
@@ -642,8 +639,7 @@ class Ui_MainWindow(object):
                 msg.setWindowTitle('Erro ao Atualizar ')
                 msg.setText('Erro ao atualizar verfique os dados inseridos')
                 msg.exec()
-
-        self.popular_tb_estoque()
+                self.popular_tb_estoque()
         self.limpar_conteudo_tela1()
         self.limpar_conteudo_tela2()
 
@@ -672,11 +668,27 @@ class Ui_MainWindow(object):
                         widget2.setCurrentIndex(0)
         self.popular_tb_estoque()
 
-    def popular_tb_estoque_prod(self,id):
+    def popular_tb_estoque_id(self, id):
         self.tb_estoque.setRowCount(0)
         db = ProdutoRepository()
         produto = db.select(id)
         produto = [produto] if produto != None else None
+        self.preencher_tabela(produto)
+
+
+
+    def popular_tb_estoque_name(self, name):
+        self.tb_estoque.setRowCount(0)
+        db = ProdutoRepository()
+        produto = db.selectName(name)
+        self.tb_estoque.setRowCount(len(produto))
+        self.preencher_tabela(produto)
+
+    def popular_tb_estoque_cat(self, id):
+        self.tb_estoque.setRowCount(0)
+        db = ProdutoRepository()
+        produto = db.selectCat(id)
+        self.tb_estoque.setRowCount(len(produto))
         self.preencher_tabela(produto)
 
     def popular_tb_estoque(self):
@@ -684,7 +696,7 @@ class Ui_MainWindow(object):
         db = ProdutoRepository()
         retorno = db.select_all()
         self.tb_estoque.setRowCount(len(retorno))
-
+        print(len(retorno))
         self.preencher_tabela(retorno)
 
     def carregar_dados(self, row, column):
@@ -704,10 +716,13 @@ class Ui_MainWindow(object):
         if produtos is not None:
             db2 = CategoriaRepository()
             linha = 0
+
             for produto in produtos:
                 categoria = db2.select(produto.id_categoria)
-                self.tb_estoque.setRowCount(linha+1)
-                valores = [produto.id, produto.nome, produto.preco, produto.quantidade,categoria.nome_cat,produto.ativo]
+                print(produto.id_categoria)
+                self.tb_estoque.setRowCount(linha + 1)
+                valores = [produto.id, produto.nome, produto.preco, produto.quantidade, categoria.nome_cat,
+                           produto.ativo]
                 for coluna, valor in enumerate(valores):
                     item = QTableWidgetItem(str(valor))
                     self.tb_estoque.setItem(linha, coluna, item)
@@ -715,4 +730,5 @@ class Ui_MainWindow(object):
 
         else:
             self.tb_estoque.setRowCount(0)
+
 
