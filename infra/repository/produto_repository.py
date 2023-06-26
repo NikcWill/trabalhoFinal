@@ -50,3 +50,15 @@ class ProdutoRepository:
             except Exception as e:
                 db.session.rollback()
                 return e
+
+    def sale(self, produto, quantidade):
+        with DBConnectionHandler() as db:
+
+            try:
+                db.session.query(Produto).filter(Produto.id == produto.id) \
+                    .update({'nome': produto.nome, 'preco': produto.preco, 'quantidade': quantidade, 'id_categoria': produto.id_categoria, 'ativo': produto.ativo})
+                db.session.commit()
+                return 'ok'
+            except Exception as e:
+                db.session.rollback()
+                return e

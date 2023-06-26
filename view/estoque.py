@@ -10,7 +10,7 @@
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
                             QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt)
+                            QSize, QTime, QUrl, Qt, QDir)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
                            QFont, QFontDatabase, QGradient, QIcon,
                            QImage, QKeySequence, QLinearGradient, QPainter,
@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
                                QHBoxLayout, QHeaderView, QLabel, QLayout,
                                QLineEdit, QMainWindow, QPushButton, QSizePolicy,
                                QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
-                               QWidget, QMessageBox)
+                               QWidget, QMessageBox, QInputDialog)
 
 from infra.entities.produto import Produto
 from infra.repository.produto_repository import ProdutoRepository
@@ -510,14 +510,13 @@ class Ui_MainWindow(object):
         db_categoria = CategoriaRepository()
         db_categoria.insert_categorias()
 
-        self.popular_tb_estoque()
-
         self.container_tela_consulta = self.frame_2
         self.container_tela_cadastro = self.frame_10
 
-        self.tb_estoque.cellDoubleClicked.connect(self.carregar_dados)
+        self.setando_botoes()
 
         # leitura de ação dos botões
+        self.tb_estoque.cellDoubleClicked.connect(self.carregar_dados)
 
         self.btn_filtrar.clicked.connect(self.pesquisar_por_id)
         self.btn_filtrar.clicked.connect(self.pesquisar_por_nome)
@@ -526,25 +525,46 @@ class Ui_MainWindow(object):
         self.btn_salvar_2.clicked.connect(self.salvar_produto)
         self.bt_limpar.clicked.connect(self.limpar_conteudo_tela1)
         self.btn_limpar_2.clicked.connect(self.limpar_conteudo_tela2)
-        self.frame_11.setVisible(False)
+        self.btn_saida_estoque_2.clicked.connect(self.saida_de_estoque)
 
+        self.txt_id.textChanged.connect(self.on_changet_tela1)
+        self.txt_nome.textChanged.connect(self.on_changet_tela1)
+        self.txt_categoria.textChanged.connect(self.on_changet_tela1)
+        self.txt_id_2.textChanged.connect(self.on_changet_tela2)
+        self.txt_nome_2.textChanged.connect(self.on_changet_tela2)
+        self.txt_preco_2.textChanged.connect(self.on_changet_tela2)
+        self.txt_quantidade_2.textChanged.connect(self.on_changet_tela2)
+        self.cb_categoria.currentTextChanged.connect(self.on_changet_tela2)
+        self.cb_ativo.currentTextChanged.connect(self.on_changet_tela2)
 
         # Aqui começa a lógica (chora moleque)
 
-    # def on_change(self):
-    #
-    #     if self.txt_nome_2.Text() != '' \
-    #             and self.txt_preco_2.text() != '' and self.txt_quantidade_2.text() != ''\
-    #              and self.cb_categoria.currentIndex()!= '0' and self.cb_ativo.currentIndex()!= '0':
-    #         self.btn_salvar_2.setEnabled(True)
-    #         self.btn_saida_estoque_2.setEnabled(True)
-    #     # elif self.txt_nome_2.Text() != '' \
-    #     #         or self.txt_preco_2.text() != '' or self.txt_quantidade_2.text() != ''\
-    #     #          or self.cb_categoria.currentIndex()!= '0' or self.cb_ativo.currentIndex()!= '0':
-    #     #     self.btn_limpar_2.setVisible(True)
-    #     else:
-    #         self.btn_limpar_2.setVisible(False)
-    #         self.btn_salvar_2.setEnabled(False)
+    def on_changet_tela1(self):
+        if self.txt_id.text() != '' or self.txt_nome.text() != '' or self.txt_categoria.text() !='':
+            self.btn_filtrar.setEnabled(True)
+            self.bt_limpar.setVisible(True)
+        else:
+            self.btn_filtrar.setEnabled(False)
+            self.bt_limpar.setVisible(False)
+
+    def on_changet_tela2(self):
+        if self.txt_nome_2.text() != '' and self.txt_preco_2.text() != '' and \
+                self.txt_quantidade_2.text() != '' and self.cb_categoria.currentText() != "Selecione" and \
+                self.cb_ativo.currentText() != "Selecione":
+
+            self.btn_salvar_2.setEnabled(True)
+            self.btn_saida_estoque_2.setEnabled(True)
+        else:
+            self.btn_salvar_2.setEnabled(False)
+            self.btn_saida_estoque_2.setEnabled(False)
+
+        if self.txt_id_2.text() != '' or self.txt_nome_2.text() != '' or self.txt_preco_2.text() != '' or \
+                self.txt_quantidade_2.text() != '' or self.cb_categoria.currentText() != "Selecione" or \
+                self.cb_ativo.currentText() != "Selecione":
+
+            self.btn_limpar_2.setVisible(True)
+        else:
+            self.btn_limpar_2.setVisible(False)
 
     def pesquisar_por_id(self):
 
@@ -561,7 +581,6 @@ class Ui_MainWindow(object):
                 msg.setText('Produto Inexistente')
                 msg.exec()
                 self.popular_tb_estoque()
-
 
     def pesquisar_por_nome(self):
         if self.txt_nome.text() != '':
@@ -604,7 +623,7 @@ class Ui_MainWindow(object):
             preco=self.txt_preco_2.text(),
             quantidade=self.txt_quantidade_2.text(),
             id_categoria=self.cb_categoria.currentIndex(),
-            ativo=self.cb_ativo.currentIndex(),
+            ativo=self.cb_ativo.currentText(),
         )
 
         if self.btn_salvar_2.text() == 'Salvar':
@@ -623,9 +642,8 @@ class Ui_MainWindow(object):
                 msg.setText('Erro ao cadastrar verfique os dados inseridos')
                 msg.exec()
 
-
         elif self.btn_salvar_2.text() == 'Atualizar':
-            produto.id = int(self.txt_id.text())
+            produto.id = int(self.txt_id_2.text())
             retorno = db.update(produto)
 
             if retorno == 'ok':
@@ -635,7 +653,6 @@ class Ui_MainWindow(object):
                 msg.setText('Produto atualizado com sucesso')
                 msg.exec()
 
-
             else:
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
@@ -643,8 +660,11 @@ class Ui_MainWindow(object):
                 msg.setText('Erro ao atualizar verfique os dados inseridos')
                 msg.exec()
                 self.popular_tb_estoque()
+
         self.limpar_conteudo_tela1()
         self.limpar_conteudo_tela2()
+        self.popular_tb_estoque()
+        self.setando_botoes()
 
 
     def limpar_conteudo_tela1(self):
@@ -656,7 +676,7 @@ class Ui_MainWindow(object):
                     elif isinstance(widget2, QComboBox):
                         widget2.setCurrentIndex(0)
         self.popular_tb_estoque()
-
+        self.setando_botoes()
     def limpar_conteudo_tela2(self):
         for widget in self.container_tela_cadastro.children():
 
@@ -668,18 +688,17 @@ class Ui_MainWindow(object):
                         widget2.clear()
                     elif isinstance(widget2, QComboBox):
                         widget2.setCurrentIndex(0)
-
+        self.btn_salvar_2.setText("Salvar")
         self.frame_11.setVisible(False)
         self.popular_tb_estoque()
-
+        self.txt_quantidade_2.setReadOnly(False)
+        self.setando_botoes()
     def popular_tb_estoque_id(self, id):
         self.tb_estoque.setRowCount(0)
         db = ProdutoRepository()
         produto = db.select(id)
         produto = [produto] if produto != None else None
         self.preencher_tabela(produto)
-
-
 
     def popular_tb_estoque_name(self, name):
         self.tb_estoque.setRowCount(0)
@@ -701,19 +720,6 @@ class Ui_MainWindow(object):
         retorno = db.select_all()
         self.tb_estoque.setRowCount(len(retorno))
         self.preencher_tabela(retorno)
-
-    # def carregar_dados(self, row, column):
-    #     self.txt_id.setStyleSheet("background-color: white;")
-    #     self.txt_id.setText(self.tb_estoque.item(row, 0).text())
-    #     self.txt_nome.setText(self.tb_estoque.item(row, 1).text())
-    #     self.txt_preco_2.setText(self.tb_estoque.item(row, 2).text())
-    #     self.txt_quantidade_2.setText(self.tb_estoque.item(row, 3).text())
-    #     self.txt_categoria.setText(self.tb_estoque.item(row, 4).text())
-    #     self.cb_ativo.setText(self.tb_estoque.item(row, 5).text())
-    #     # self.btn_salvar.setText('Atualizar')
-    #     # self.btn_remover.setVisible(True)
-    #     # self.btn_limpar.setVisible(True)
-    #     # self.txt_id.setReadOnly(True)
 
     def preencher_tabela(self, produtos):
         if produtos is not None:
@@ -743,25 +749,58 @@ class Ui_MainWindow(object):
         map_cat = {'Selecione': 0, 'Elétrica': 1, 'Mecânica': 2, 'Funilaria': 3, 'Internos': 4}
         self.cb_categoria.setCurrentIndex(map_cat.get(self.tb_estoque.item(row, 4).text(), 0))
 
-        map_ativo = {'Selecione': 1, 'Ativo': 0, 'Inativo': 3}
-
-        self.cb_ativo.setCurrentIndex(map_ativo.get(self.tb_estoque.item(column, 5).text(), 0))
-        print(map_ativo.get(self.tb_estoque.item(column, 5).text(), 0))
-
+        map_ativo = {0: 'Selecione', 1: 'Ativo', 2: 'Inativo'}
+        texto_ativo = self.tb_estoque.item(row, 5).text()
+        valor_ativo = next((k for k, v in map_ativo.items() if v == texto_ativo), 0)
+        self.cb_ativo.setCurrentIndex(valor_ativo)
 
         self.frame_11.setVisible(True)
         self.txt_id_2.setReadOnly(True)
+        self.txt_quantidade_2.setReadOnly(True)
         self.btn_salvar_2.setText("Atualizar")
         self.popular_tb_estoque()
 
+    def saida_de_estoque(self):
+
+        db = ProdutoRepository()
+        produto = db.select(self.txt_id_2.text())
+
+        msg = QInputDialog()
+        msg.setInputMode(QInputDialog.IntInput)
+        text, ok = msg.getInt(self, f"Saída de Produto {produto.nome}!!",
+                              f"A Quantidade atua é {produto.quantidade}")
+
+        nova_quantidade = produto.quantidade - text
+        db.sale(produto, nova_quantidade)
+        self.popular_tb_estoque()
+        self.limpar_conteudo_tela2()
+        self.setando_botoes()
+
+    def entrada_de_estoque(self):
+
+        db = ProdutoRepository()
+        produto = db.select(self.txt_id_2.text())
+
+        msg = QInputDialog()
+        msg.setInputMode(QInputDialog.IntInput)
+        text, ok = msg.getInt(self, f"Entrada de Produto {produto.nome}!!",
+                              f"A Quantidade atua é {produto.quantidade}")
+
+        nova_quantidade = produto.quantidade + text
+        db.sale(produto, nova_quantidade)
+        self.popular_tb_estoque()
+        self.limpar_conteudo_tela2()
+        self.setando_botoes()
+
+    def setando_botoes(self):
+        self.popular_tb_estoque()
+        self.bt_limpar.setVisible(False)
+        self.btn_filtrar.setEnabled(False)
+        self.frame_11.setVisible(False)
+        self.btn_salvar_2.setEnabled(False)
+        self.btn_limpar_2.setVisible(False)
+        self.btn_saida_estoque_2.setEnabled(False)
 
 
 
-        # self.btn_remover.setVisible(True)
-        # self.txt_id.setReadOnly(True)
-        #
-        # self.lbl_id.setVisible(True)
-        # self.txt_id.setVisible(True)
-        #
-        # self.popular_tabela_notas()
 
