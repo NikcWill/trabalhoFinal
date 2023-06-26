@@ -515,6 +515,8 @@ class Ui_MainWindow(object):
         self.container_tela_consulta = self.frame_2
         self.container_tela_cadastro = self.frame_10
 
+        self.tb_estoque.cellDoubleClicked.connect(self.carregar_dados)
+
         # leitura de ação dos botões
 
         self.btn_filtrar.clicked.connect(self.pesquisar_por_id)
@@ -524,6 +526,7 @@ class Ui_MainWindow(object):
         self.btn_salvar_2.clicked.connect(self.salvar_produto)
         self.bt_limpar.clicked.connect(self.limpar_conteudo_tela1)
         self.btn_limpar_2.clicked.connect(self.limpar_conteudo_tela2)
+        self.frame_11.setVisible(False)
 
 
         # Aqui começa a lógica (chora moleque)
@@ -631,7 +634,7 @@ class Ui_MainWindow(object):
                 msg.setWindowTitle('Produto Atualizado ')
                 msg.setText('Produto atualizado com sucesso')
                 msg.exec()
-                self.voltar_tela_inicial
+
 
             else:
                 msg = QMessageBox()
@@ -664,8 +667,9 @@ class Ui_MainWindow(object):
 
                         widget2.clear()
                     elif isinstance(widget2, QComboBox):
-                        print("entrei")
                         widget2.setCurrentIndex(0)
+
+        self.frame_11.setVisible(False)
         self.popular_tb_estoque()
 
     def popular_tb_estoque_id(self, id):
@@ -696,21 +700,20 @@ class Ui_MainWindow(object):
         db = ProdutoRepository()
         retorno = db.select_all()
         self.tb_estoque.setRowCount(len(retorno))
-        print(len(retorno))
         self.preencher_tabela(retorno)
 
-    def carregar_dados(self, row, column):
-        self.txt_id.setStyleSheet("background-color: white;")
-        self.txt_id.setText(self.tb_estoque.item(row, 0).text())
-        self.txt_nome.setText(self.tb_estoque.item(row, 1).text())
-        self.txt_preco_2.setText(self.tb_estoque.item(row, 2).text())
-        self.txt_quantidade_2.setText(self.tb_estoque.item(row, 3).text())
-        self.txt_categoria.setText(self.tb_estoque.item(row, 4).text())
-        self.cb_ativo.setText(self.tb_estoque.item(row, 5).text())
-        # self.btn_salvar.setText('Atualizar')
-        # self.btn_remover.setVisible(True)
-        # self.btn_limpar.setVisible(True)
-        # self.txt_id.setReadOnly(True)
+    # def carregar_dados(self, row, column):
+    #     self.txt_id.setStyleSheet("background-color: white;")
+    #     self.txt_id.setText(self.tb_estoque.item(row, 0).text())
+    #     self.txt_nome.setText(self.tb_estoque.item(row, 1).text())
+    #     self.txt_preco_2.setText(self.tb_estoque.item(row, 2).text())
+    #     self.txt_quantidade_2.setText(self.tb_estoque.item(row, 3).text())
+    #     self.txt_categoria.setText(self.tb_estoque.item(row, 4).text())
+    #     self.cb_ativo.setText(self.tb_estoque.item(row, 5).text())
+    #     # self.btn_salvar.setText('Atualizar')
+    #     # self.btn_remover.setVisible(True)
+    #     # self.btn_limpar.setVisible(True)
+    #     # self.txt_id.setReadOnly(True)
 
     def preencher_tabela(self, produtos):
         if produtos is not None:
@@ -719,7 +722,6 @@ class Ui_MainWindow(object):
 
             for produto in produtos:
                 categoria = db2.select(produto.id_categoria)
-                print(produto.id_categoria)
                 self.tb_estoque.setRowCount(linha + 1)
                 valores = [produto.id, produto.nome, produto.preco, produto.quantidade, categoria.nome_cat,
                            produto.ativo]
@@ -731,4 +733,35 @@ class Ui_MainWindow(object):
         else:
             self.tb_estoque.setRowCount(0)
 
+    def carregar_dados(self, row, column):
+        self.txt_id.setStyleSheet("background-color: white;")
+        self.txt_id_2.setText(self.tb_estoque.item(row, 0).text())
+        self.txt_nome_2.setText(self.tb_estoque.item(row, 1).text())
+        self.txt_preco_2.setText(self.tb_estoque.item(row, 2).text())
+        self.txt_quantidade_2.setText(self.tb_estoque.item(row, 3).text())
+
+        map_cat = {'Selecione': 0, 'Elétrica': 1, 'Mecânica': 2, 'Funilaria': 3, 'Internos': 4}
+        self.cb_categoria.setCurrentIndex(map_cat.get(self.tb_estoque.item(row, 4).text(), 0))
+
+        map_ativo = {'Selecione': 1, 'Ativo': 0, 'Inativo': 3}
+
+        self.cb_ativo.setCurrentIndex(map_ativo.get(self.tb_estoque.item(column, 5).text(), 0))
+        print(map_ativo.get(self.tb_estoque.item(column, 5).text(), 0))
+
+
+        self.frame_11.setVisible(True)
+        self.txt_id_2.setReadOnly(True)
+        self.btn_salvar_2.setText("Atualizar")
+        self.popular_tb_estoque()
+
+
+
+
+        # self.btn_remover.setVisible(True)
+        # self.txt_id.setReadOnly(True)
+        #
+        # self.lbl_id.setVisible(True)
+        # self.txt_id.setVisible(True)
+        #
+        # self.popular_tabela_notas()
 

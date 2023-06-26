@@ -10,6 +10,7 @@ class TelaInicial(QMainWindow, Ui_MainWindow):
         self.btn_cadastrar.clicked.connect(self.abrir_segunda_tela)
         self.btn_saida_estoque_2.clicked.connect(self.voltar_tela_inicial)
         self.btn_salvar_2.clicked.connect(self.voltar_tela_inicial)
+        self.tb_estoque.cellDoubleClicked.connect(self.abrir_segunda_tela)
 
     @Slot()
     def abrir_segunda_tela(self):
