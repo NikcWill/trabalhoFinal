@@ -63,6 +63,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.lbl_title)
 
+
         self.verticalLayout_5.addWidget(self.frame)
 
         self.frame_2 = QFrame(self.tela_estoque)
@@ -94,6 +95,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.txt_id)
 
+
         self.verticalLayout_7.addWidget(self.frame_6)
 
         self.frame_9 = QFrame(self.frame_2)
@@ -115,6 +117,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_6.addWidget(self.txt_nome)
 
+
         self.verticalLayout_7.addWidget(self.frame_9)
 
         self.frame_7 = QFrame(self.frame_2)
@@ -130,13 +133,21 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.lbl_categoria)
 
-        self.txt_categoria = QLineEdit(self.frame_7)
-        self.txt_categoria.setObjectName(u"txt_categoria")
-        self.txt_categoria.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
+        self.cb_categoria1 = QComboBox(self.frame_7)
+        self.cb_categoria1.addItem("")
+        self.cb_categoria1.addItem("")
+        self.cb_categoria1.addItem("")
+        self.cb_categoria1.addItem("")
+        self.cb_categoria1.addItem("")
+        self.cb_categoria1.setObjectName(u"cb_categoria1")
+        self.cb_categoria1.setFont(font1)
+        self.cb_categoria1.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
-        self.verticalLayout_4.addWidget(self.txt_categoria)
+        self.verticalLayout_4.addWidget(self.cb_categoria1)
+
 
         self.verticalLayout_7.addWidget(self.frame_7)
+
 
         self.verticalLayout_5.addWidget(self.frame_2)
 
@@ -178,10 +189,10 @@ class Ui_MainWindow(object):
         self.tb_estoque.setHorizontalHeaderItem(5, __qtablewidgetitem5)
         self.tb_estoque.setObjectName(u"tb_estoque")
         self.tb_estoque.setStyleSheet(u"background-color:rgb(255, 255, 255); border-style: solid;\n"
-                                      "  border-bottom-width: 1px;\n"
-                                      "  border-top-width: 1px;\n"
-                                      "  border-right-width: 1px;\n"
-                                      "  border-left-width: 1px;")
+                                        "  border-bottom-width: 1px;\n"
+                                        "  border-top-width: 1px;\n"
+                                        "  border-right-width: 1px;\n"
+                                        "  border-left-width: 1px;")
         self.tb_estoque.setFrameShape(QFrame.NoFrame)
         self.tb_estoque.setGridStyle(Qt.SolidLine)
         self.tb_estoque.horizontalHeader().setCascadingSectionResizes(False)
@@ -193,6 +204,7 @@ class Ui_MainWindow(object):
         self.tb_estoque.verticalHeader().setStretchLastSection(False)
 
         self.horizontalLayout_5.addWidget(self.tb_estoque)
+
 
         self.verticalLayout_5.addWidget(self.frame_3)
 
@@ -234,7 +246,9 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.bt_limpar)
 
+
         self.horizontalLayout.addWidget(self.frame_5)
+
 
         self.verticalLayout_5.addWidget(self.frame_4)
 
@@ -258,6 +272,7 @@ class Ui_MainWindow(object):
         self.lbl_title_2.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_9.addWidget(self.lbl_title_2)
+
 
         self.verticalLayout_14.addWidget(self.frame_8)
 
@@ -287,6 +302,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addWidget(self.txt_id_2)
 
+
         self.verticalLayout_16.addWidget(self.frame_11)
 
         self.frame_12 = QFrame(self.frame_10)
@@ -308,6 +324,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_12.addWidget(self.txt_nome_2)
 
+
         self.verticalLayout_16.addWidget(self.frame_12)
 
         self.widget_2 = QWidget(self.frame_10)
@@ -326,6 +343,7 @@ class Ui_MainWindow(object):
         self.txt_preco_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_8.addWidget(self.txt_preco_2)
+
 
         self.verticalLayout_16.addWidget(self.widget_2)
 
@@ -348,6 +366,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_13.addWidget(self.txt_quantidade_2)
 
+
         self.verticalLayout_16.addWidget(self.frame_13)
 
         self.widget_3 = QWidget(self.frame_10)
@@ -367,12 +386,12 @@ class Ui_MainWindow(object):
         self.cb_categoria.addItem("")
         self.cb_categoria.addItem("")
         self.cb_categoria.addItem("")
-        self.cb_categoria.addItem("")
         self.cb_categoria.setObjectName(u"cb_categoria")
         self.cb_categoria.setFont(font1)
         self.cb_categoria.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
         self.verticalLayout_10.addWidget(self.cb_categoria)
+
 
         self.verticalLayout_16.addWidget(self.widget_3)
 
@@ -397,7 +416,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_15.addWidget(self.cb_ativo)
 
+
         self.verticalLayout_16.addWidget(self.widget)
+
 
         self.verticalLayout_14.addWidget(self.frame_10)
 
@@ -425,12 +446,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.btn_salvar_2)
 
-        self.btn_limpar_2 = QPushButton(self.frame_15)
-        self.btn_limpar_2.setObjectName(u"btn_limpar_2")
-        self.btn_limpar_2.setFont(font1)
-        self.btn_limpar_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
+        self.btn_entrada_estoque_2 = QPushButton(self.frame_15)
+        self.btn_entrada_estoque_2.setObjectName(u"btn_entrada_estoque_2")
+        self.btn_entrada_estoque_2.setFont(font1)
+        self.btn_entrada_estoque_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
 
-        self.horizontalLayout_4.addWidget(self.btn_limpar_2)
+        self.horizontalLayout_4.addWidget(self.btn_entrada_estoque_2)
 
         self.btn_saida_estoque_2 = QPushButton(self.frame_15)
         self.btn_saida_estoque_2.setObjectName(u"btn_saida_estoque_2")
@@ -439,7 +460,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.btn_saida_estoque_2)
 
+        self.btn_limpar_2 = QPushButton(self.frame_15)
+        self.btn_limpar_2.setObjectName(u"btn_limpar_2")
+        self.btn_limpar_2.setFont(font1)
+        self.btn_limpar_2.setStyleSheet(u"background-color:rgb(255, 255, 255);border-radius: 4px;")
+
+        self.horizontalLayout_4.addWidget(self.btn_limpar_2)
+
+
         self.horizontalLayout_3.addWidget(self.frame_15)
+
 
         self.verticalLayout_14.addWidget(self.frame_14)
 
@@ -453,8 +483,8 @@ class Ui_MainWindow(object):
 
         self.tabWidget.setCurrentIndex(0)
 
-        QMetaObject.connectSlotsByName(MainWindow)
 
+        QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
@@ -464,6 +494,12 @@ class Ui_MainWindow(object):
         self.txt_id.setText("")
         self.lbl_nome.setText(QCoreApplication.translate("MainWindow", u"Nome", None))
         self.lbl_categoria.setText(QCoreApplication.translate("MainWindow", u"Categoria", None))
+        self.cb_categoria1.setItemText(0, QCoreApplication.translate("MainWindow", u"Selecione", None))
+        self.cb_categoria1.setItemText(1, QCoreApplication.translate("MainWindow", u"El\u00e9trica", None))
+        self.cb_categoria1.setItemText(2, QCoreApplication.translate("MainWindow", u"Mec\u00e2nica", None))
+        self.cb_categoria1.setItemText(3, QCoreApplication.translate("MainWindow", u"Funilaria", None))
+        self.cb_categoria1.setItemText(4, QCoreApplication.translate("MainWindow", u"Interno", None))
+
         ___qtablewidgetitem = self.tb_estoque.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"ID", None));
         ___qtablewidgetitem1 = self.tb_estoque.horizontalHeaderItem(1)
@@ -479,8 +515,7 @@ class Ui_MainWindow(object):
         self.btn_cadastrar.setText(QCoreApplication.translate("MainWindow", u"Cadastrar", None))
         self.btn_filtrar.setText(QCoreApplication.translate("MainWindow", u"Filtrar", None))
         self.bt_limpar.setText(QCoreApplication.translate("MainWindow", u"Limpar", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_estoque),
-                                  QCoreApplication.translate("MainWindow", u"tela_estoque", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_estoque), QCoreApplication.translate("MainWindow", u"tela_estoque", None))
         self.lbl_title_2.setText(QCoreApplication.translate("MainWindow", u"PRODUTO", None))
         self.lbl_id_2.setText(QCoreApplication.translate("MainWindow", u"ID", None))
         self.txt_id_2.setText("")
@@ -500,12 +535,11 @@ class Ui_MainWindow(object):
         self.cb_ativo.setItemText(2, QCoreApplication.translate("MainWindow", u"Inativo", None))
 
         self.btn_salvar_2.setText(QCoreApplication.translate("MainWindow", u"Salvar", None))
+        self.btn_entrada_estoque_2.setText(QCoreApplication.translate("MainWindow", u"Entrada estoque", None))
+        self.btn_saida_estoque_2.setText(QCoreApplication.translate("MainWindow", u"Sa\u00edda estoque", None))
         self.btn_limpar_2.setText(QCoreApplication.translate("MainWindow", u"Limpar", None))
-        self.btn_saida_estoque_2.setText(QCoreApplication.translate("MainWindow", u"Sa\u00edda de estoque", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_produto),
-                                  QCoreApplication.translate("MainWindow", u"tela_produto", None))
-
-
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tela_produto), QCoreApplication.translate("MainWindow", u"tela_produto", None))
+    # retranslateUi
 
         db_categoria = CategoriaRepository()
         db_categoria.insert_categorias()
@@ -526,10 +560,12 @@ class Ui_MainWindow(object):
         self.bt_limpar.clicked.connect(self.limpar_conteudo_tela1)
         self.btn_limpar_2.clicked.connect(self.limpar_conteudo_tela2)
         self.btn_saida_estoque_2.clicked.connect(self.saida_de_estoque)
+        self.btn_entrada_estoque_2.clicked.connect(self.entrada_de_estoque)
+
 
         self.txt_id.textChanged.connect(self.on_changet_tela1)
         self.txt_nome.textChanged.connect(self.on_changet_tela1)
-        self.txt_categoria.textChanged.connect(self.on_changet_tela1)
+        self.cb_categoria1.currentIndexChanged.connect(self.on_changet_tela1)
         self.txt_id_2.textChanged.connect(self.on_changet_tela2)
         self.txt_nome_2.textChanged.connect(self.on_changet_tela2)
         self.txt_preco_2.textChanged.connect(self.on_changet_tela2)
@@ -540,12 +576,13 @@ class Ui_MainWindow(object):
         # Aqui começa a lógica (chora moleque)
 
     def on_changet_tela1(self):
-        if self.txt_id.text() != '' or self.txt_nome.text() != '' or self.txt_categoria.text() !='':
+        if self.txt_id.text() != '' or self.txt_nome.text() != '' or self.cb_categoria1.currentIndex() !=0:
             self.btn_filtrar.setEnabled(True)
             self.bt_limpar.setVisible(True)
         else:
             self.btn_filtrar.setEnabled(False)
             self.bt_limpar.setVisible(False)
+            self.limpar_conteudo_tela1()
 
     def on_changet_tela2(self):
         if self.txt_nome_2.text() != '' and self.txt_preco_2.text() != '' and \
@@ -554,9 +591,11 @@ class Ui_MainWindow(object):
 
             self.btn_salvar_2.setEnabled(True)
             self.btn_saida_estoque_2.setEnabled(True)
+            self.btn_entrada_estoque_2.setEnabled(True)
         else:
             self.btn_salvar_2.setEnabled(False)
             self.btn_saida_estoque_2.setEnabled(False)
+            self.btn_entrada_estoque_2.setEnabled(False)
 
         if self.txt_id_2.text() != '' or self.txt_nome_2.text() != '' or self.txt_preco_2.text() != '' or \
                 self.txt_quantidade_2.text() != '' or self.cb_categoria.currentText() != "Selecione" or \
@@ -600,13 +639,13 @@ class Ui_MainWindow(object):
                 self.popular_tb_estoque()
 
     def pesquisar_por_categoria(self):
-        if self.txt_categoria.text() != '':
+        if self.cb_categoria1.currentIndex() != 0:
 
             db = ProdutoRepository()
-            retorno = db.selectCat(int(self.txt_categoria.text()))
+            retorno = db.selectCat(self.cb_categoria1.currentIndex())
             if retorno is not None:
 
-                self.popular_tb_estoque_cat(int(self.txt_categoria.text()))
+                self.popular_tb_estoque_cat(self.cb_categoria1.currentIndex())
 
             else:
                 msg = QMessageBox()
@@ -616,7 +655,7 @@ class Ui_MainWindow(object):
                 msg.exec()
                 self.popular_tb_estoque()
     def salvar_produto(self):
-
+        self.verificar_campos()
         db = ProdutoRepository()
         produto = Produto(
             nome=self.txt_nome_2.text(),
@@ -800,6 +839,33 @@ class Ui_MainWindow(object):
         self.btn_salvar_2.setEnabled(False)
         self.btn_limpar_2.setVisible(False)
         self.btn_saida_estoque_2.setEnabled(False)
+        self.btn_entrada_estoque_2.setEnabled(False)
+
+    def verificar_campos(self):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setWindowTitle('Cadastro de Produto')
+        msg.setText('')
+
+        preco_input = self.txt_preco_2.text().replace(',', '.')
+        quantidade_input = self.txt_quantidade_2.text()
+
+        if preco_input:
+            try:
+                preco_float = float(preco_input)
+                self.txt_preco_2.setText(f"{preco_float:.2f}")
+            except ValueError:
+                msg.setText('Campo Preço está Inválido')
+                msg.exec()
+        elif quantidade_input:
+            try:
+                quantidade_int = int(quantidade_input)
+                self.txt_quantidade_2.setText(f"{quantidade_int}")
+            except ValueError:
+                msg.setText('Campo Quantidade está Inválido')
+                msg.exec()
+
+
 
 
 
