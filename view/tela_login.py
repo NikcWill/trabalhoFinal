@@ -18,7 +18,7 @@ from infra.repository.produto_repository import ProdutoRepository
 from infra.entities.categoria import Categoria
 from infra.repository.categoria_repository import CategoriaRepository
 
-from tela import logo
+# from view.imagens import logo.qrc
 
 class Ui_Login_tela(object):
     def setupUi(self, Login_tela):

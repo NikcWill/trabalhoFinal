@@ -2,15 +2,12 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QWidget
 from PySide6.QtCore import Slot
 from view.estoque import Ui_MainWindow
 from view.tela_login import Ui_Login_tela
-
 class TelaLogin(QMainWindow, Ui_Login_tela):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
 
         self.pushButton.clicked.connect(TelaInicial)
-
-
 
 class TelaInicial(QMainWindow, Ui_MainWindow, Ui_Login_tela ):
     def __init__(self):
@@ -38,8 +35,6 @@ class TelaInicial(QMainWindow, Ui_MainWindow, Ui_Login_tela ):
 
 if __name__ == '__main__':
     app = QApplication([])
-
-    main_window = TelaLogin()
-    main_window.show()
-
+    tela_login = TelaInicial()
+    tela_login.show()
     app.exec()

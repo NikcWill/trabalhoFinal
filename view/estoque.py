@@ -818,20 +818,23 @@ class Ui_MainWindow(object):
         self.setando_botoes()
 
     def entrada_de_estoque(self):
-
         db = ProdutoRepository()
         produto = db.select(self.txt_id_2.text())
 
-        msg = QInputDialog()
-        msg.setInputMode(QInputDialog.IntInput)
-        text, ok = msg.getInt(self, f"Entrada de Produto {produto.nome}!!",
-                              f"A Quantidade atua é {produto.quantidade}")
+        dialog = QInputDialog(self)  # Cria uma instância de QInputDialog com self como widget pai
+        dialog.setInputMode(QInputDialog.IntInput)
+        dialog.setWindowTitle(f"Entrada de Produto {produto.nome}!!")
+        dialog.setLabelText(f"A Quantidade atual é {produto.quantidade}")
+        dialog.setIntRange(0, 999999)  # Define o intervalo de valores inteiros permitidos
 
-        nova_quantidade = produto.quantidade + text
-        db.sale(produto, nova_quantidade)
-        self.popular_tb_estoque()
-        self.limpar_conteudo_tela2()
-        self.setando_botoes()
+        if dialog.exec():
+            text, ok = dialog.intValue()
+            if ok:
+                nova_quantidade = produto.quantidade + text
+                db.sale(produto, nova_quantidade)
+                self.popular_tb_estoque()
+                self.limpar_conteudo_tela2()
+                self.setando_botoes()
 
     def setando_botoes(self):
         self.popular_tb_estoque()
