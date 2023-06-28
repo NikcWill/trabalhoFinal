@@ -590,8 +590,7 @@ class Ui_MainWindow(object):
                 self.cb_ativo.currentText() != "Selecione":
 
             self.btn_salvar_2.setEnabled(True)
-            self.btn_saida_estoque_2.setEnabled(True)
-            self.btn_entrada_estoque_2.setEnabled(True)
+
         else:
             self.btn_salvar_2.setEnabled(False)
             self.btn_saida_estoque_2.setEnabled(False)
@@ -798,6 +797,9 @@ class Ui_MainWindow(object):
         self.txt_quantidade_2.setReadOnly(True)
         self.btn_salvar_2.setText("Atualizar")
         self.popular_tb_estoque()
+
+        self.btn_entrada_estoque_2.setEnabled(True)
+        self.btn_saida_estoque_2.setEnabled(True)
 
     def saida_de_estoque(self):
 
