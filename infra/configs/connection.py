@@ -6,7 +6,7 @@ from infra.entities.categoria import Categoria
 class DBConnectionHandler:
     def __init__(self):
         #Dados endereço do banco de dados
-        self.__connectio_string = 'mysql+pymysql://root:Senac2021@localhost:3306/estoqueBD'
+        self.__connectio_string = 'mysql+pymysql://root:Gremiofbpa16!@localhost:3308/estoqueBD'
 
         #Instância do engine(gerenciador do banco)
         self.__engine = self.__create_database_engine()

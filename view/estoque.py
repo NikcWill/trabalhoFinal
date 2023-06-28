@@ -23,9 +23,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
 
 from infra.entities.produto import Produto
 from infra.repository.produto_repository import ProdutoRepository
-from infra.entities.categoria import Categoria
 from infra.repository.categoria_repository import CategoriaRepository
-
 
 
 class Ui_MainWindow(object):

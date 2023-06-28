@@ -18,7 +18,7 @@ from infra.repository.produto_repository import ProdutoRepository
 from infra.entities.categoria import Categoria
 from infra.repository.categoria_repository import CategoriaRepository
 
-from tela import logo
+# from tela import logo
 
 class Ui_Login_tela(object):
     def setupUi(self, Login_tela):
@@ -134,6 +134,6 @@ class Ui_Login_tela(object):
         self.txt_login.setText("")
         self.lbl_senha.setText(QCoreApplication.translate("Login_tela", u"SENHA", None))
         self.pushButton.setText(QCoreApplication.translate("Login_tela", u"ENTRAR", None))
-        # self.pushButton.clicked.connect()
+        # self.pushButton.clicked.connect(self)
     # retranslateUi
 
